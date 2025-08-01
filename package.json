@@ -5,10 +5,16 @@
   "scripts": {
     "start": "expo start",
     "reset-project": "node ./scripts/reset-project.js",
-    "android": "expo start --android",
-    "ios": "expo start --ios",
+    "android": "expo run:android",
+    "ios": "expo run:ios",
     "web": "expo start --web",
-    "lint": "expo lint"
+    "lint": "expo lint",
+    "clean": "rm -rf node_modules .expo pnpm-lock.yaml package-lock.json ios android .metro-cache && pnpm store prune && pnpm install",
+    "prebuild": "npx expo prebuild --clean && cd ios && pod install && cd ..",
+    "bundle": "npx react-native bundle --platform ios --dev false --entry-file index.js --bundle-output ios/main.jsbundle --assets-dest ios  --verbose > bundle.log 2>&1 ",
+    "expo:doctor": "npx expo-doctor",
+    "install:fix": "npx expo install --fix",
+    "build:xcode": "pnpm clean && pnpm install:fix && pnpm prebuild && pnpm bundle"
   },
   "dependencies": {
     "@expo/vector-icons": "^14.1.0",
@@ -40,10 +46,14 @@
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",
+    "@babel/runtime": "^7.28.2",
+    "@react-native-community/cli": "^19.1.1",
     "@types/react": "~19.0.10",
-    "typescript": "~5.8.3",
+    "babel-plugin-module-resolver": "^5.0.2",
+    "babel-preset-expo": "^13.2.3",
     "eslint": "^9.25.0",
-    "eslint-config-expo": "~9.2.0"
+    "eslint-config-expo": "~9.2.0",
+    "typescript": "~5.8.3"
   },
   "private": true
 }
